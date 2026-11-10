@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
-    "@shipping-combinator/shared": "*"
+    "@shipping-combinator/shared": "*",
+    "railway": "^3.16.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

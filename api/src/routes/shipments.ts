@@ -22,7 +22,7 @@ export async function shipmentRoutes(server: FastifyInstance) {
     }
 
     // Create shipments for each order link (one per order)
-    const shipments = await prisma.$transaction(async (tx) => {
+    const shipments = await prisma.$transaction(async (tx: typeof prisma) => {
       const createdShipments = [];
       for (const orderLink of consolidation.orderLinks) {
         const shipment = await tx.shipment.create({
@@ -48,7 +48,7 @@ export async function shipmentRoutes(server: FastifyInstance) {
         entityId: consolidationId,
         action: 'SHIPMENTS_CREATED',
         actor: 'system',
-        diff: JSON.stringify({ shipmentIds: shipments.map(s => s.id) }),
+        diff: JSON.stringify({ shipmentIds: shipments.map((s: { id: string }) => s.id) }),
         consolidationId,
       },
     });

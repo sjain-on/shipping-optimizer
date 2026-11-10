@@ -32,7 +32,7 @@ export async function createConsolidationDraft(orders: { externalOrderId: string
       let shopifyOrderName = order.externalOrderId;
       if (fullOrder) {
         try {
-          const raw = JSON.parse(fullOrder.rawData);
+          const raw = JSON.parse(fullOrder.rawData as string);
           shopifyOrderName = raw.order_name || raw.name || order.externalOrderId;
         } catch {
           // Use externalOrderId as fallback

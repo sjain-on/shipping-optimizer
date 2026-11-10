@@ -10,7 +10,7 @@ export async function syncShipmentAWB(shipmentId: string, awb: string) {
     throw new Error('Shipment not found');
   }
 
-  return await prisma.$transaction(async (tx) => {
+  return await prisma.$transaction(async (tx: typeof prisma) => {
     const updatedShipment = await tx.shipment.update({
       where: { id: shipmentId },
       data: { awb, status: 'AWB_SYNCED' },

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
+    "railway": "^3.16.0",
     "zod": "^3.0.0"
   },
   "devDependencies": {
