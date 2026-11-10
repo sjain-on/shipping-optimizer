@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Turbo
+.turbo/
+
+# Prisma
+prisma/migrations/
+
+# Docker
+*.dockerfile
+docker-compose.override.yml
+
+# Git
+.git/
+.gitignore
+
+# Claude
+.claude/
