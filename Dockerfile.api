@@ -16,8 +16,8 @@ RUN npm ci --workspaces --include-workspace-root
 # Copy source code
 COPY . .
 
-# Build API
-RUN npm run build --workspace=api
+# Build API and generate Prisma client
+RUN npm run build --workspace=api && npx prisma generate --schema=prisma/schema.prisma
 
 # Production stage
 FROM node:20-alpine AS runner
@@ -34,16 +34,12 @@ COPY shared/package*.json ./shared/
 # Install production dependencies only
 RUN npm ci --workspaces --include-workspace-root --omit=dev
 
-# Copy built API
+# Copy built API and Prisma client
 COPY --from=builder /app/api/dist ./api/dist
 COPY --from=builder /app/api/node_modules ./api/node_modules
 COPY --from=builder /app/shared/dist ./shared/dist
-
-# Copy Prisma schema
-COPY prisma ./prisma
-
-# Generate Prisma Client
-RUN npx prisma generate --schema=prisma/schema.prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 EXPOSE 3001
 
