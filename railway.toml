@@ -1,0 +1,61 @@
+# Railway configuration for Shipping Combinator
+# This file defines the three services: api, worker, admin
+
+[build]
+builder = "DOCKERFILE"
+
+# API Service
+[[services]]
+name = "api"
+dockerfilePath = "Dockerfile.api"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[services.variables]
+NODE_ENV = "production"
+PORT = "3001"
+DATABASE_URL = "${{Postgres.DATABASE_URL}}"
+ADMIN_API_KEY = "${{ADMIN_API_KEY}}"
+SHOPIFY_API_SECRET = "${{SHOPIFY_API_SECRET}}"
+SHOPIFY_WEBHOOK_SECRET = "${{SHOPIFY_WEBHOOK_SECRET}}"
+EASYECOM_API_KEY = "${{EASYECOM_API_KEY}}"
+EASYECOM_WEBHOOK_SECRET = "${{EASYECOM_WEBHOOK_SECRET}}"
+QUICKSHIFT_API_KEY = "${{QUICKSHIFT_API_KEY}}"
+QUICKSHIFT_WEBHOOK_SECRET = "${{QUICKSHIFT_WEBHOOK_SECRET}}"
+
+# Worker Service
+[[services]]
+name = "worker"
+dockerfilePath = "Dockerfile.worker"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[services.variables]
+NODE_ENV = "production"
+DATABASE_URL = "${{Postgres.DATABASE_URL}}"
+ADMIN_API_KEY = "${{ADMIN_API_KEY}}"
+SHOPIFY_API_SECRET = "${{SHOPIFY_API_SECRET}}"
+SHOPIFY_WEBHOOK_SECRET = "${{SHOPIFY_WEBHOOK_SECRET}}"
+EASYECOM_API_KEY = "${{EASYECOM_API_KEY}}"
+EASYECOM_WEBHOOK_SECRET = "${{EASYECOM_WEBHOOK_SECRET}}"
+QUICKSHIFT_API_KEY = "${{QUICKSHIFT_API_KEY}}"
+QUICKSHIFT_WEBHOOK_SECRET = "${{QUICKSHIFT_WEBHOOK_SECRET}}"
+
+# Admin Dashboard Service
+[[services]]
+name = "admin"
+dockerfilePath = "Dockerfile.admin"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[services.variables]
+NODE_ENV = "production"
+PORT = "3000"
+NEXT_PUBLIC_ADMIN_API_KEY = "${{ADMIN_API_KEY}}"
+DATABASE_URL = "${{Postgres.DATABASE_URL}}"

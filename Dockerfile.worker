@@ -1,0 +1,51 @@
+# Build stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY api/package*.json ./api/
+COPY worker/package*.json ./worker/
+COPY admin/package*.json ./admin/
+COPY shared/package*.json ./shared/
+
+# Install dependencies
+RUN npm ci --workspaces --include-workspace-root
+
+# Copy source code
+COPY . .
+
+# Build worker
+RUN npm run build --workspace=worker
+
+# Production stage
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Copy package files for production install
+COPY package*.json ./
+COPY api/package*.json ./api/
+COPY worker/package*.json ./worker/
+COPY admin/package*.json ./admin/
+COPY shared/package*.json ./shared/
+
+# Install production dependencies only
+RUN npm ci --workspaces --include-workspace-root --omit=dev
+
+# Copy built worker
+COPY --from=builder /app/worker/dist ./worker/dist
+COPY --from=builder /app/worker/node_modules ./worker/node_modules
+COPY --from=builder /app/shared/dist ./shared/dist
+COPY --from=builder /app/shared/node_modules ./shared/node_modules
+COPY --from=builder /app/api/dist ./api/dist
+COPY --from=builder /app/api/node_modules ./api/node_modules
+
+# Copy Prisma schema
+COPY prisma ./prisma
+
+# Generate Prisma Client
+RUN npx prisma generate --schema=prisma/schema.prisma
+
+CMD ["node", "worker/dist/index.js"]

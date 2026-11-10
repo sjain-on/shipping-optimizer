@@ -1,0 +1,46 @@
+# Build stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY api/package*.json ./api/
+COPY worker/package*.json ./worker/
+COPY admin/package*.json ./admin/
+COPY shared/package*.json ./shared/
+
+# Install dependencies
+RUN npm ci --workspaces --include-workspace-root
+
+# Copy source code
+COPY . .
+
+# Build admin
+RUN npm run build --workspace=admin
+
+# Production stage
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Copy package files for production install
+COPY package*.json ./
+COPY admin/package*.json ./admin/
+COPY shared/package*.json ./shared/
+
+# Install production dependencies only
+RUN npm ci --workspaces --include-workspace-root --omit=dev
+
+# Copy built admin
+COPY --from=builder /app/admin/.next ./admin/.next
+COPY --from=builder /app/admin/public ./admin/public
+COPY --from=builder /app/admin/node_modules ./admin/node_modules
+COPY --from=builder /app/shared/dist ./shared/dist
+COPY --from=builder /app/shared/node_modules ./shared/node_modules
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start", "--workspace", "admin"]
