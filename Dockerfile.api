@@ -16,6 +16,9 @@ RUN npm ci --workspaces --include-workspace-root
 # Copy source code
 COPY . .
 
+# Copy prisma schema for generation
+COPY prisma ./prisma/
+
 # Generate Prisma client first, then build API
 RUN npx prisma generate --schema=prisma/schema.prisma && npm run build --workspace=api
 
