@@ -17,7 +17,7 @@ export async function createConsolidationDraft(orders: { externalOrderId: string
   });
 
   // Create a map for quick lookup
-  const orderMap = new Map(fullOrders.map((o: { externalOrderId: string }) => [o.externalOrderId, o]));
+  const orderMap = new Map(fullOrders.map((o: { externalOrderId: string; rawData: string }) => [o.externalOrderId, o]));
 
   // 3. Create OrderLinks for each order with proper data
   await prisma.orderLink.createMany({
