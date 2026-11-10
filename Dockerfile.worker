@@ -13,8 +13,9 @@ COPY shared/package*.json ./shared/
 # Install dependencies
 RUN npm ci --workspaces --include-workspace-root
 
-# Copy source code
+# Copy source code and prisma schema
 COPY . .
+COPY prisma ./prisma
 
 # Build worker and generate Prisma client
 RUN npm run build --workspace=worker && npx prisma generate --schema=prisma/schema.prisma
