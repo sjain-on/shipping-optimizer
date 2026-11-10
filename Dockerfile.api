@@ -38,7 +38,6 @@ RUN npm ci --workspaces --include-workspace-root --omit=dev
 COPY --from=builder /app/api/dist ./api/dist
 COPY --from=builder /app/api/node_modules ./api/node_modules
 COPY --from=builder /app/shared/dist ./shared/dist
-COPY --from=builder /app/shared/node_modules ./shared/node_modules
 
 # Copy Prisma schema
 COPY prisma ./prisma
