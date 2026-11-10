@@ -1,9 +1,6 @@
 # Railway configuration for Shipping Combinator
 # This file defines the three services: api, worker, admin
 
-[build]
-builder = "DOCKERFILE"
-
 # API Service
 [[services]]
 name = "api"
