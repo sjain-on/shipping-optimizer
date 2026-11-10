@@ -41,7 +41,7 @@ export default async function AuditLogsPage({
           </tr>
         </thead>
         <tbody>
-          {logs.map((log) => (
+          {logs.map((log: { id: string; createdAt: Date; entityType: string; entityId: string; action: string; diff: string | null }) => (
             <tr key={log.id}>
               <td className="py-2 px-4 border-b">{log.createdAt.toLocaleString()}</td>
               <td className="py-2 px-4 border-b">{log.entityType} ({log.entityId})</td>
