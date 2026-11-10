@@ -1,3 +1,14 @@
 - Never read .output or .jsonl files (subagent transcripts). Use the subagent's final message only.
-
 - Subagents write findings to docs/ and return at most 10 lines.
+- Mandatory Shell Path Resolution Rules
+  - The project directory is `/Users/swapnil/Shipping Combinator`.
+  - The directory name contains a space. Always treat `Shipping Combinator` as a SINGLE directory name.
+  - ALWAYS wrap the complete project path in double quotes when using shell commands.
+  - NEVER use the unquoted path `/Users/swapnil/Shipping Combinator`.
+  - NEVER append `Shipping` and `Combinator` as separate arguments.
+  - Use `cd "/Users/swapnil/Shipping Combinator"` before executing project commands.
+  - When using absolute paths, always quote them:  
+  `"/Users/swapnil/Shipping Combinator/railway.toml"`
+  - Do not rely on braces to resolve paths. Use double quotes.
+  - Before executing commands, verify that the working directory is correct using `pwd`.
+  - Apply these rules to all shell commands, npm commands, Git commands, file operations and deployment commands.
