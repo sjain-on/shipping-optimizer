@@ -1,7 +1,9 @@
 # Railway configuration for Shipping Combinator
 # This file defines the three services: api, worker, admin
 
-# API Service
+[build]
+builder = "DOCKERFILE"
+
 [[services]]
 name = "api"
 dockerfilePath = "Dockerfile.api"
@@ -22,7 +24,6 @@ EASYECOM_WEBHOOK_SECRET = "${{EASYECOM_WEBHOOK_SECRET}}"
 QUICKSHIFT_API_KEY = "${{QUICKSHIFT_API_KEY}}"
 QUICKSHIFT_WEBHOOK_SECRET = "${{QUICKSHIFT_WEBHOOK_SECRET}}"
 
-# Worker Service
 [[services]]
 name = "worker"
 dockerfilePath = "Dockerfile.worker"
@@ -42,7 +43,6 @@ EASYECOM_WEBHOOK_SECRET = "${{EASYECOM_WEBHOOK_SECRET}}"
 QUICKSHIFT_API_KEY = "${{QUICKSHIFT_API_KEY}}"
 QUICKSHIFT_WEBHOOK_SECRET = "${{QUICKSHIFT_WEBHOOK_SECRET}}"
 
-# Admin Dashboard Service
 [[services]]
 name = "admin"
 dockerfilePath = "Dockerfile.admin"
